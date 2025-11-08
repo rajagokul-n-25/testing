@@ -1,7 +1,6 @@
 #!/bin/bash
 # -----------------------------------------
-# Harbor Cleanup Script (multi-repo support)
-# Pass REPO name as argument or environment variable
+# Harbor Cleanup Script 
 # -----------------------------------------
 
 # Harbor credentials and project details
@@ -10,7 +9,7 @@ HARBOR_PASSWORD="your_password"
 HARBOR_URL="https://harbor.example.com"
 PROJECT="your_project"
 
-# Repository name (passed via ENV or argument)
+# Repository name 
 REPO="${REPO:-$1}"
 
 if [ -z "$REPO" ]; then
@@ -61,6 +60,7 @@ echo "Triggering Harbor garbage collection..."
 curl -s -X POST -u "$HARBOR_USER:$HARBOR_PASSWORD" "$HARBOR_URL/api/v2.0/system/gc"
 echo "Garbage collection job started. Monitor via Harbor UI or API."
 
+
 # --- Log Retention Policy ---
 LOG_DIR="/opt/logs"
 RETENTION_DAYS=60
@@ -70,7 +70,7 @@ echo "Old log files older than $RETENTION_DAYS days have been removed from $LOG_
 
 echo "===== Harbor Cleanup Completed for $PROJECT/$REPO at $(date) ====="
 
-
+# --- cron schedule ---
 
 0 2 */15 * * REPO=frontend /opt/scripts/harbor_cleanup.sh >> /opt/logs/harbor_cleanup_frontend_$(date +\%Y-\%m-\%d).log 2>&1
 
